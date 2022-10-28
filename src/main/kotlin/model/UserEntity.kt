@@ -1,11 +1,10 @@
 package model
 
 import jakarta.persistence.*
-import org.hibernate.cfg.AccessType
 
 @Entity
 @Table(name = "users")
-data class User(
+data class UserEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,7 @@
 package repository
 
 import jakarta.persistence.EntityManager
-import jakarta.persistence.criteria.CriteriaQuery
-import jakarta.persistence.criteria.Root
-import model.User
+import model.UserEntity
 import org.hibernate.cfg.Configuration
 
 
@@ -11,23 +9,23 @@ class UserRepository {
 
     private val entityManager: EntityManager = Configuration()
         .configure()
-        .addAnnotatedClass(User::class.java)
+        .addAnnotatedClass(UserEntity::class.java)
         .buildSessionFactory()
         .openSession()
 
-    fun getUserById(id: Int): User {
-        return entityManager.find(User::class.java, id)
+    fun getUserById(id: Int): UserEntity {
+        return entityManager.find(UserEntity::class.java, id)
     }
 
-    fun save(user: User): Int {
+    fun save(userEntity: UserEntity): Int {
         entityManager.transaction.begin()
-        entityManager.persist(user)
+        entityManager.persist(userEntity)
         entityManager.transaction.commit()
 
-        return user.id
+        return userEntity.id
     }
 
-    fun getUserByFirstName(firstName: String): User {
+    fun getUserByFirstName(firstName: String): UserEntity {
 
         // Criteria API
 //        val criteriaBuilder = entityManager.criteriaBuilder
@@ -38,9 +36,15 @@ class UserRepository {
 //
 //        return entityManager.createQuery(criteriaQuery).resultList[0]
 
-        // Native Query
+        // HQL
         return entityManager
-            .createNativeQuery("SELECT * FROM users WHERE firstName = '$firstName'", User::class.java)
-            .resultList[0] as User
+            .createQuery("from UserEntity where firstName = :firstName", UserEntity::class.java)
+            .setParameter("firstName", firstName)
+            .resultList[0]
+
+        // Native Query
+//        return entityManager
+//            .createNativeQuery("SELECT * FROM users WHERE firstName = '$firstName'", User::class.java)
+//            .resultList[0] as User
     }
 }

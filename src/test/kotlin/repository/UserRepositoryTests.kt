@@ -1,8 +1,6 @@
 package repository
 
-import model.User
-import org.hibernate.Session
-import org.hibernate.cfg.Configuration
+import model.UserEntity
 import org.junit.jupiter.api.Test
 
 class UserRepositoryTests {
@@ -11,24 +9,24 @@ class UserRepositoryTests {
 
     @Test
     fun saveUser(){
-        val user = User(
+        val userEntity = UserEntity(
             firstName = "Петр",
             lastName = "Петров",
             middleName = "Петрович"
         )
 
-        userRepository.save(user)
+        userRepository.save(userEntity)
     }
 
     @Test
     fun getUserById() {
-        val expectedUser = User(
+        val expectedUserEntity = UserEntity(
             firstName = "Петр",
             lastName = "Петров",
             middleName = "Петрович"
         )
 
-        val id = userRepository.save(expectedUser)
+        val id = userRepository.save(expectedUserEntity)
 
         val user = userRepository.getUserById(id)
         println(user)
@@ -36,13 +34,13 @@ class UserRepositoryTests {
 
     @Test
     fun getUserByFirstName(){
-        val expectedUser = User(
+        val expectedUserEntity = UserEntity(
             firstName = "Иван",
             lastName = "Петров",
             middleName = "Петрович"
         )
 
-        userRepository.save(expectedUser)
+        userRepository.save(expectedUserEntity)
 
         val user = userRepository.getUserByFirstName("Иван")
         println(user)
